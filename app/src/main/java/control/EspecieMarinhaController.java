@@ -83,8 +83,7 @@ public class EspecieMarinhaController {
                 e.setHabitat(habitat.get());
                 e.setStatusConservacao(status.get());
 
-                e.setNomeCientifico(
-                        nomeCientifico.get() == null || nomeCientifico.get().isBlank() ? "" : nomeCientifico.get());
+                e.setNomeCientifico(nomeCientifico.get() == null || nomeCientifico.get().isBlank() ? "" : nomeCientifico.get());
 
                 LocalDate cadastro = LocalDate.now();
                 e.setDataCadastro(cadastro);
@@ -131,15 +130,170 @@ public class EspecieMarinhaController {
     }
 
     public boolean deletar() {
-        return true;
+        String idTxt = idString.get() == null ? "" : idString.get().trim();
+        if (idTxt.isBlank()) {
+            mensagemErro.set("Informe ou selecione uma espécie para excluir.");
+            return false;
+        }
+
+        long idAlvo;
+        try {
+            idAlvo = Long.parseLong(idTxt);
+        } catch (NumberFormatException ex) {
+            mensagemErro.set("Digite um número válido para excluir.");
+            return false;
+        }
+
+        EspecieMarinha alvo = null;
+        for (EspecieMarinha item : dao.pesquisarTodos()) {
+            if (item.getId() == idAlvo) {
+                alvo = item;
+                break;
+            }
+        }
+
+        if (alvo == null) {
+            mensagemErro.set("Nenhuma espécie encontrada com o ID " + idAlvo + " para excluir.");
+            return false;
+        }
+
+        try {
+            dao.remover(alvo);
+            carregarListagem();
+            limparCampos();
+            mensagemErro.set("");
+            return true;
+        } catch (Exception ex) {
+            mensagemErro.set("Erro ao excluir espécie: " + ex.getMessage());
+            return false;
+        }
     }
 
     public boolean pesquisar() {
+        String idTexto = idString.get() == null ? "" : idString.get().trim();
+        String comumTexto = nomeComum.get() == null ? "" : nomeComum.get().trim();
+        String cientificoTexto = nomeCientifico.get() == null ? "" : nomeCientifico.get().trim();
+
+        if (idTexto.isBlank() && comumTexto.isBlank() && cientificoTexto.isBlank()) {
+            mensagemErro.set("Informe ao menos um critério para pesquisar.");
+            return false;
+        }
+
+        List<EspecieMarinha> todas;
+        try {
+            todas = dao.pesquisarTodos();
+        } catch (Exception ex) {
+            mensagemErro.set("Erro ao consultar o banco de dados: " + ex.getMessage());
+            return false;
+        }
+
+        List<EspecieMarinha> resultados = new ArrayList<>();
+
+        if (!comumTexto.isBlank()) {
+            String termo = comumTexto.toLowerCase();
+            for (EspecieMarinha item : todas) {
+                if (item.getNomeComum() != null && item.getNomeComum().toLowerCase().contains(termo)) {
+                    resultados.add(item);
+                }
+            }
+            if (resultados.isEmpty()) {
+                mensagemErro.set("Nenhuma espécie encontrada contendo \"" + comumTexto + "\".");
+                return false;
+            }
+        } else if (!cientificoTexto.isBlank()) {
+            String termo = cientificoTexto.toLowerCase();
+            for (EspecieMarinha item : todas) {
+                if (item.getNomeCientifico() != null &&
+                        item.getNomeCientifico().toLowerCase().contains(termo)) {
+                    resultados.add(item);
+                }
+            }
+            if (resultados.isEmpty()) {
+                mensagemErro.set("Nenhuma espécie encontrada contendo \"" + cientificoTexto + "\".");
+                return false;
+            }
+        } else if (!idTexto.isBlank() && !idTexto.equals("0")) {
+            try {
+                long idBusca = Long.parseLong(idTexto);
+                for (EspecieMarinha item : todas) {
+                    if (item.getId() == idBusca) {
+                        resultados.add(item);
+                    }
+                }
+                if (resultados.isEmpty()) {
+                    mensagemErro.set("Nenhuma espécie encontrada com o ID " + idBusca + ".");
+                    return false;
+                }
+            } catch (NumberFormatException ex) {
+                mensagemErro.set("Digite um número válido para pesquisar por ID.");
+                return false;
+            }
+        } else {
+            mensagemErro.set("Informe ao menos um critério para pesquisar.");
+            return false;
+        }
+
+        listagem.setAll(resultados);
+        mensagemErro.set("");
         return true;
     }
 
     public boolean atualizar() {
-        return true;
+        String idTxt = idString.get() == null ? "" : idString.get().trim();
+        if (idTxt.isBlank()) {
+            mensagemErro.set("Selecione ou pesquise uma espécie antes de atualizar.");
+            return false;
+        }
+
+        long idAlvo;
+        try {
+            idAlvo = Long.parseLong(idTxt);
+        } catch (NumberFormatException ex) {
+            mensagemErro.set("Identificador inválido para atualização.");
+            return false;
+        }
+
+        if (!validarCamposObrigatorios()) {
+            return false;
+        }
+
+        EspecieMarinha existente = null;
+        for (EspecieMarinha item : dao.pesquisarTodos()) {
+            if (item.getId() == idAlvo) {
+                existente = item;
+                break;
+            }
+        }
+
+        if (existente == null) {
+            mensagemErro.set("Espécie com ID " + idAlvo + " não encontrada no banco.");
+            return false;
+        }
+
+        try {
+            EspecieMarinha atualizada = new EspecieMarinha();
+            atualizada.setId(idAlvo);
+            atualizada.setNomeComum(nomeComum.get().trim());
+            atualizada.setHabitat(habitat.get().trim());
+            atualizada.setStatusConservacao(status.get().trim());
+            atualizada.setNomeCientifico(
+                    nomeCientifico.get() == null || nomeCientifico.get().isBlank()
+                            ? ""
+                            : nomeCientifico.get().trim());
+            atualizada.setDataCadastro(
+                    existente.getDataCadastro() != null ? existente.getDataCadastro() : LocalDate.now());
+            atualizada.setDataUltimaAtualizacao(LocalDate.now());
+
+            dao.atualizar(idAlvo, atualizada);
+
+            carregarListagem();
+            limparCampos();
+            mensagemErro.set("");
+            return true;
+        } catch (Exception ex) {
+            mensagemErro.set("Erro ao atualizar espécie: " + ex.getMessage());
+            return false;
+        }
     }
 
     public void limparCampos() {
