@@ -5,7 +5,6 @@ import entity.EspecieMarinha;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -17,19 +16,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
 
 public class EspecieMarinhaView {
-    private Scene scn;
     private EspecieMarinhaController control = new EspecieMarinhaController();
     private TableView<EspecieMarinha> listagem = new TableView<>();
     private DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private BorderPane root;
 
-    public EspecieMarinhaView(Stage stage) {
+    public EspecieMarinhaView() {
         BorderPane p = new BorderPane();
+        this.root = p;
         GridPane grid = new GridPane();
-        scn = new Scene(p, 800, 600);
+    
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(12));
@@ -175,9 +174,8 @@ public class EspecieMarinhaView {
 
         p.setTop(grid);
         p.setCenter(listagem);
-
-        stage.setScene(scn);
-        stage.setTitle("Gestão de Especies Marinhas");
-        stage.show();
+    }
+    public BorderPane getRoot() {
+        return root;
     }
 }
