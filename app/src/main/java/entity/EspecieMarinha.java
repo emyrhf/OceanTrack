@@ -1,33 +1,32 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class EspecieMarinha{
     private long id;
     private String nomeComum;
     private String nomeCientifico;
     private String habitat;
-    private double pesoMedioKg;
-    private double tamanhoMedioCm;
     private String statusConservacao;
     private LocalDate dataCadastro;
-    private LocalDate dataUltimaAtualizacao;
+    private LocalDate dataAtualizacao;
+
+    private DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public EspecieMarinha(){
-        this(0, " ", " ", " ", 0.0, 0.0, " ");
+        this(0, " ", " ", " ", " ");
     }
 
-    public EspecieMarinha(long id, String nomeComum, String nomeCientifico, String habitat, double pesoMedioKg, double tamanhoMedioCm, String statusConservacao)
+    public EspecieMarinha(long id, String nomeComum, String nomeCientifico, String habitat, String statusConservacao)
     {
         this.id = id;
         this.nomeComum = nomeComum;
         this.nomeCientifico = nomeCientifico;
         this.habitat = habitat;
-        this.pesoMedioKg = pesoMedioKg;
-        this.tamanhoMedioCm = tamanhoMedioCm;
         this.statusConservacao = statusConservacao;
         this.dataCadastro = LocalDate.now();
-        this.dataUltimaAtualizacao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now();
     }
     
     public long getId(){
@@ -46,14 +45,6 @@ public class EspecieMarinha{
         return this.habitat;
     }
 
-    public double getPesoMedioKg(){
-        return this.pesoMedioKg;
-    }
-
-    public double getTamanhoMedioCm(){
-        return this.tamanhoMedioCm;
-    }
-
     public String getStatusConservacao(){
         return this.statusConservacao;
     }
@@ -63,7 +54,7 @@ public class EspecieMarinha{
     }
 
     public LocalDate getDataUltimaAtualizacao(){
-        return this.dataUltimaAtualizacao;
+        return this.dataAtualizacao;
     }
 
     // Setters: 
@@ -84,14 +75,6 @@ public class EspecieMarinha{
         this.habitat = habitat;
     }
 
-    public void setPesoMedioKg(double pesoMedioKg){
-        this.pesoMedioKg = pesoMedioKg;
-    }
-
-    public void setTamanhoMedioCm(double tamanhoMedioCm){
-        this.tamanhoMedioCm = tamanhoMedioCm;
-    }
-
     public void setStatusConservacao(String statusConservacao){
         this.statusConservacao = statusConservacao;
     }
@@ -101,10 +84,12 @@ public class EspecieMarinha{
     }
 
     public void setDataUltimaAtualizacao(LocalDate dataUltimaAtualizacao){
-        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
+        this.dataAtualizacao = dataUltimaAtualizacao;
     }
 
-    // @Override public String toString(){
-    //     return ;
-    // }
+    @Override public String toString(){
+        String dataC = this.dataCadastro.format(formatador);
+        String dataA = this.dataCadastro.format(formatador);
+        return String.format("%d, %s, %s, %s, %s, %s, %s", this.id, this.nomeComum, this.nomeCientifico, this.habitat, this.statusConservacao, dataC, dataA);
+    }
 }

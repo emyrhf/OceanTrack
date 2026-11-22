@@ -13,15 +13,14 @@ public class Conexao {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    // Método temporário apenas para testar a conexão
-    public static void main(String[] args) {
-        try (Connection conn = getConnection()) {
-            if (conn != null) {
-                System.out.println("Conectado com sucesso!");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao conectar: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+    // public static void main(String[] args) {
+    //     try (Connection conn = getConnection()) {
+    //         if (conn != null) {
+    //             System.out.println("Conectado com sucesso!");
+    //         }
+    //     } catch (SQLException e) {
+    //         System.out.println("Erro ao conectar: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    // }
 }
