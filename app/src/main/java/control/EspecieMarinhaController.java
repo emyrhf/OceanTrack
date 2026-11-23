@@ -21,7 +21,7 @@ public class EspecieMarinhaController {
     private ObservableList<EspecieMarinha> listagem = FXCollections.observableArrayList();
     private long proximoId = 1;
 
-    private StringProperty idString = new SimpleStringProperty(String.valueOf(proximoId));
+    private StringProperty idString = new SimpleStringProperty("");
     private StringProperty nomeComum = new SimpleStringProperty(""); // obrigatorio
     private StringProperty nomeCientifico = new SimpleStringProperty(""); // opcional
     private StringProperty habitat = new SimpleStringProperty(""); // obrigatorio
@@ -83,7 +83,8 @@ public class EspecieMarinhaController {
                 e.setHabitat(habitat.get());
                 e.setStatusConservacao(status.get());
 
-                e.setNomeCientifico(nomeCientifico.get() == null || nomeCientifico.get().isBlank() ? "" : nomeCientifico.get());
+                e.setNomeCientifico(
+                        nomeCientifico.get() == null || nomeCientifico.get().isBlank() ? "" : nomeCientifico.get());
 
                 LocalDate cadastro = LocalDate.now();
                 e.setDataCadastro(cadastro);
@@ -172,9 +173,10 @@ public class EspecieMarinhaController {
     public boolean pesquisar() {
         String idTexto = idString.get() == null ? "" : idString.get().trim();
         String comumTexto = nomeComum.get() == null ? "" : nomeComum.get().trim();
-        String cientificoTexto = nomeCientifico.get() == null ? "" : nomeCientifico.get().trim();
+        String habitatTexto = habitat.get() == null ? "" : habitat.get().trim();
+        String statusTexto = status.get() == null ? "" : status.get().trim();
 
-        if (idTexto.isBlank() && comumTexto.isBlank() && cientificoTexto.isBlank()) {
+        if (idTexto.isBlank() && comumTexto.isBlank() && habitatTexto.isBlank() && statusTexto.isBlank()) {
             mensagemErro.set("Informe ao menos um critério para pesquisar.");
             return false;
         }
@@ -200,16 +202,27 @@ public class EspecieMarinhaController {
                 mensagemErro.set("Nenhuma espécie encontrada contendo \"" + comumTexto + "\".");
                 return false;
             }
-        } else if (!cientificoTexto.isBlank()) {
-            String termo = cientificoTexto.toLowerCase();
+        } else if (!habitatTexto.isBlank()) {
+            String termo = habitatTexto.toLowerCase();
             for (EspecieMarinha item : todas) {
-                if (item.getNomeCientifico() != null &&
-                        item.getNomeCientifico().toLowerCase().contains(termo)) {
+                if (item.getHabitat() != null && item.getHabitat().toLowerCase().contains(termo)) {
                     resultados.add(item);
                 }
             }
             if (resultados.isEmpty()) {
-                mensagemErro.set("Nenhuma espécie encontrada contendo \"" + cientificoTexto + "\".");
+                mensagemErro.set("Nenhuma espécie encontrada com o habitat contendo \"" + habitatTexto + "\".");
+                return false;
+            }
+        } else if (!statusTexto.isBlank()) {
+            String termo = statusTexto.toLowerCase();
+            for (EspecieMarinha item : todas) {
+                if (item.getStatusConservacao() != null &&
+                        item.getStatusConservacao().toLowerCase().contains(termo)) {
+                    resultados.add(item);
+                }
+            }
+            if (resultados.isEmpty()) {
+                mensagemErro.set("Nenhuma espécie encontrada com o status contendo \"" + statusTexto + "\".");
                 return false;
             }
         } else if (!idTexto.isBlank() && !idTexto.equals("0")) {
@@ -298,7 +311,7 @@ public class EspecieMarinhaController {
 
     public void limparCampos() {
         String dataHoje = LocalDate.now().format(formatador);
-        idString.set(String.valueOf(proximoId));
+        idString.set("");
         nomeComum.set("");
         nomeCientifico.set("");
         habitat.set("");

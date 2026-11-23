@@ -53,16 +53,14 @@ public class EspecieMarinhaDAOImpl implements EspecieMarinhaDAO {
                 """;
 
         try (Connection conn = Conexao.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, especie.getNomeComum());
             stmt.setString(2, especie.getNomeCientifico());
             stmt.setString(3, especie.getHabitat());
             stmt.setString(4, especie.getStatusConservacao());
 
-            LocalDate dataAtualizacao = especie.getDataUltimaAtualizacao() != null
-                    ? especie.getDataUltimaAtualizacao()
-                    : LocalDate.now();
+            LocalDate dataAtualizacao = especie.getDataUltimaAtualizacao() != null ? especie.getDataUltimaAtualizacao() : LocalDate.now();
             stmt.setDate(5, Date.valueOf(dataAtualizacao));
 
             stmt.setLong(6, id);

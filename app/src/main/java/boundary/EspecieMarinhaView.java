@@ -83,8 +83,7 @@ public class EspecieMarinhaView {
             if (control.cadastrar()) {
                 new Alert(Alert.AlertType.INFORMATION, "Espécie registrada com sucesso!", ButtonType.OK).showAndWait();
             } else {
-                new Alert(Alert.AlertType.ERROR, "Preencha os campos obrigatórios corretamente.", ButtonType.OK)
-                        .showAndWait();
+                new Alert(Alert.AlertType.ERROR, "Preencha os campos obrigatórios corretamente.", ButtonType.OK).showAndWait();
             }
         });
 
@@ -166,10 +165,9 @@ public class EspecieMarinhaView {
 
             {
                 btnPesquisar.setOnAction(e -> {
-                    boolean semNomes = (txtNomeComum.getText() == null || txtNomeComum.getText().isBlank())
-                            && (txtNomeCientifico.getText() == null || txtNomeCientifico.getText().isBlank());
+                    boolean semFiltrosPrincipais = (txtNomeComum.getText() == null || txtNomeComum.getText().isBlank()) && (txtHabitat.getText() == null || txtHabitat.getText().isBlank()) && (txtStatus.getText() == null || txtStatus.getText().isBlank());
 
-                    if (semNomes && (txtId.getText() == null || txtId.getText().isBlank())) {
+                    if (semFiltrosPrincipais && (txtId.getText() == null || txtId.getText().isBlank())) {
                         TextInputDialog dialog = new TextInputDialog();
                         dialog.setTitle("Pesquisar por ID");
                         dialog.setHeaderText(null);
@@ -182,15 +180,9 @@ public class EspecieMarinhaView {
                     }
 
                     if (control.pesquisar()) {
-                        new Alert(Alert.AlertType.INFORMATION, "Espécie(s) encontrada(s)!", ButtonType.OK)
-                                .showAndWait();
+                        new Alert(Alert.AlertType.INFORMATION, "Espécie(s) encontrada(s)!", ButtonType.OK).showAndWait();
                     } else {
-                        new Alert(Alert.AlertType.ERROR,
-                                control.mensagemErroProperty().get() != null
-                                        && !control.mensagemErroProperty().get().isBlank()
-                                                ? control.mensagemErroProperty().get()
-                                                : "Espécie não encontrada.",
-                                ButtonType.OK).showAndWait();
+                        new Alert(Alert.AlertType.ERROR,control.mensagemErroProperty().get() != null && !control.mensagemErroProperty().get().isBlank()? control.mensagemErroProperty().get() : "Espécie não encontrada.", ButtonType.OK).showAndWait();
                     }
                 });
 
@@ -199,8 +191,7 @@ public class EspecieMarinhaView {
                     if (selecionada != null) {
                         control.idProperty().set(String.valueOf(selecionada.getId()));
                         if (control.deletar()) {
-                            new Alert(Alert.AlertType.INFORMATION, "Espécie deletada com sucesso!", ButtonType.OK)
-                                    .showAndWait();
+                            new Alert(Alert.AlertType.INFORMATION, "Espécie deletada com sucesso!", ButtonType.OK).showAndWait();
                         } else {
                             new Alert(Alert.AlertType.ERROR, "Erro ao deletar a espécie.", ButtonType.OK).showAndWait();
                         }
@@ -222,12 +213,8 @@ public class EspecieMarinhaView {
                 control.nomeCientificoProperty().set(nova.getNomeCientifico() != null ? nova.getNomeCientifico() : "");
                 control.habitatProperty().set(nova.getHabitat() != null ? nova.getHabitat() : "");
                 control.statusProperty().set(nova.getStatusConservacao() != null ? nova.getStatusConservacao() : "");
-                control.dataCStringProperty()
-                        .set(nova.getDataCadastro() != null ? nova.getDataCadastro().format(formatador) : "");
-                control.dataAStringProperty()
-                        .set(nova.getDataUltimaAtualizacao() != null
-                                ? nova.getDataUltimaAtualizacao().format(formatador)
-                                : "");
+                control.dataCStringProperty().set(nova.getDataCadastro() != null ? nova.getDataCadastro().format(formatador) : "");
+                control.dataAStringProperty().set(nova.getDataUltimaAtualizacao() != null ? nova.getDataUltimaAtualizacao().format(formatador) : "");
             }
         });
 
@@ -237,7 +224,7 @@ public class EspecieMarinhaView {
         colNomeComum.setMaxWidth(220);
         colAcoes.setMinWidth(150);
 
-        listagem.getColumns().addAll(colId, colNomeComum, colNomeCientifico, colHabitat, colStatus, colCadastro,colAtualizacao, colAcoes);
+        listagem.getColumns().addAll(colId, colNomeComum, colNomeCientifico, colHabitat, colStatus, colCadastro, colAtualizacao, colAcoes);
         listagem.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         listagem.setItems(control.getListagem());
 
