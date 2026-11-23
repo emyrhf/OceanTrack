@@ -10,12 +10,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -62,14 +62,13 @@ public class EspecieMarinhaView {
         Button btnPesquisar = new Button("Pesquisar");
         Button btnLimpar = new Button("Limpar");
 
-        String estiloDireita = "-fx-alignment: RIGHT;";
-        txtNomeComum.setStyle(estiloDireita);
-        txtNomeCientifico.setStyle(estiloDireita);
-        txtHabitat.setStyle(estiloDireita);
-        txtStatus.setStyle(estiloDireita);
-        btnCadastrar.setStyle(estiloDireita);
-        btnLimpar.setStyle(estiloDireita);
-        btnPesquisar.setStyle(estiloDireita);
+        ComboBox<String> cmbStatus = new ComboBox<>();
+        cmbStatus.getItems().addAll(
+            "Ativa",
+            "Ameaçada",
+            "Em extinção"
+        );
+        cmbStatus.setPromptText("Selecione...");
 
         Bindings.bindBidirectional(txtId.textProperty(), control.idProperty());
         Bindings.bindBidirectional(txtNomeComum.textProperty(), control.nomeComumProperty());
@@ -77,7 +76,7 @@ public class EspecieMarinhaView {
         Bindings.bindBidirectional(txtHabitat.textProperty(), control.habitatProperty());
         Bindings.bindBidirectional(txtCadastro.textProperty(), control.dataCStringProperty());
         Bindings.bindBidirectional(txtAtualizacao.textProperty(), control.dataAStringProperty());
-        Bindings.bindBidirectional(txtStatus.textProperty(), control.statusProperty());
+        Bindings.bindBidirectional(cmbStatus.valueProperty(), control.statusProperty());
 
         btnCadastrar.setOnAction(e -> {
             if (control.cadastrar()) {
@@ -106,20 +105,21 @@ public class EspecieMarinhaView {
             control.carregarListagem();
         });
 
+
         grid.add(new Label("Id:"), 0, 0);
         grid.add(txtId, 1, 0);
 
-        grid.add(new Label("Nome Comum:"), 0, 1);
+        grid.add(new Label("Nome Comum *:"), 0, 1);
         grid.add(txtNomeComum, 1, 1);
 
         grid.add(new Label("Nome Científico:"), 0, 2);
         grid.add(txtNomeCientifico, 1, 2);
 
-        grid.add(new Label("Habitat:"), 0, 3);
+        grid.add(new Label("Habitat *:"), 0, 3);
         grid.add(txtHabitat, 1, 3);
 
-        grid.add(new Label("Status de Conservação:"), 2, 1);
-        grid.add(txtStatus, 3, 1);
+        grid.add(new Label("Status de Conservação *:"), 2, 1);
+        grid.add(cmbStatus, 3, 1);
 
         grid.add(new Label("Data de Cadastro:"), 2, 2);
         grid.add(txtCadastro, 3, 2);
@@ -164,25 +164,25 @@ public class EspecieMarinhaView {
             private final HBox box = new HBox(6, btnAtualizar, btnExcluir);
 
             {
-                btnPesquisar.setOnAction(e -> {
-                    boolean semFiltrosPrincipais = (txtNomeComum.getText() == null || txtNomeComum.getText().isBlank()) && (txtHabitat.getText() == null || txtHabitat.getText().isBlank()) && (txtStatus.getText() == null || txtStatus.getText().isBlank());
+                btnAtualizar.setOnAction(e -> {
+                    EspecieMarinha selecionada = getTableView().getItems().get(getIndex());
+                    if (selecionada != null) {
+                        control.idProperty().set(String.valueOf(selecionada.getId()));
+                        control.nomeComumProperty().set(txtNomeComum.getText() != null ? txtNomeComum.getText() : "");
+                        control.nomeCientificoProperty().set(txtNomeCientifico.getText() != null ? txtNomeCientifico.getText() : "");
+                        control.habitatProperty().set(txtHabitat.getText() != null ? txtHabitat.getText() : "");
+                        control.statusProperty().set(cmbStatus.getValue() != null ? cmbStatus.getValue() : "");
 
-                    if (semFiltrosPrincipais && (txtId.getText() == null || txtId.getText().isBlank())) {
-                        TextInputDialog dialog = new TextInputDialog();
-                        dialog.setTitle("Pesquisar por ID");
-                        dialog.setHeaderText(null);
-                        dialog.setContentText("Informe o ID da espécie:");
-                        dialog.showAndWait().ifPresent(idDigitado -> {
-                            if (!idDigitado.isBlank()) {
-                                control.idProperty().set(idDigitado.trim());
-                            }
-                        });
-                    }
-
-                    if (control.pesquisar()) {
-                        new Alert(Alert.AlertType.INFORMATION, "Espécie(s) encontrada(s)!", ButtonType.OK).showAndWait();
-                    } else {
-                        new Alert(Alert.AlertType.ERROR,control.mensagemErroProperty().get() != null && !control.mensagemErroProperty().get().isBlank()? control.mensagemErroProperty().get() : "Espécie não encontrada.", ButtonType.OK).showAndWait();
+                        if (control.atualizar()) {
+                            new Alert(Alert.AlertType.INFORMATION, "Espécie atualizada com sucesso!", ButtonType.OK).showAndWait();
+                        } else {
+                            String msg = control.mensagemErroProperty().get();
+                            new Alert(
+                                    Alert.AlertType.ERROR,
+                                    (msg != null && !msg.isBlank()) ? msg : "Erro ao atualizar a espécie.",
+                                    ButtonType.OK
+                            ).showAndWait();
+                        }
                     }
                 });
 

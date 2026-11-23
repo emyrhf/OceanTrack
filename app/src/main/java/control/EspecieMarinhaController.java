@@ -77,14 +77,45 @@ public class EspecieMarinhaController {
             return false;
         } else {
             try {
+                StringBuilder sb = new StringBuilder();
+                for (String p : nomeComum.get().trim().toLowerCase().split("\\s+")) {
+                    if (!p.isBlank()) {
+                        sb.append(sb.length() > 0 ? " " : "")
+                                .append(Character.toUpperCase(p.charAt(0)))
+                                .append(p.substring(1));
+                    }
+                }
+                String comumFormatado = sb.toString();
+
+                sb.setLength(0);
+                for (String p : habitat.get().trim().toLowerCase().split("\\s+")) {
+                    if (!p.isBlank()) {
+                        sb.append(sb.length() > 0 ? " " : "")
+                                .append(Character.toUpperCase(p.charAt(0)))
+                                .append(p.substring(1));
+                    }
+                }
+                String habitatFormatado = sb.toString();
+
+                sb.setLength(0);
+                String ncCru = nomeCientifico.get() == null ? "" : nomeCientifico.get().trim().toLowerCase();
+                if (!ncCru.isBlank()) {
+                    for (String p : ncCru.split("\\s+")) {
+                        if (!p.isBlank()) {
+                            sb.append(sb.length() > 0 ? " " : "")
+                                    .append(Character.toUpperCase(p.charAt(0)))
+                                    .append(p.substring(1));
+                        }
+                    }
+                }
+                String cientificoFormatado = sb.toString();
+
                 EspecieMarinha e = new EspecieMarinha();
                 e.setId(proximoId++);
-                e.setNomeComum(nomeComum.get());
-                e.setHabitat(habitat.get());
-                e.setStatusConservacao(status.get());
-
-                e.setNomeCientifico(
-                        nomeCientifico.get() == null || nomeCientifico.get().isBlank() ? "" : nomeCientifico.get());
+                e.setNomeComum(comumFormatado);
+                e.setHabitat(habitatFormatado);
+                e.setStatusConservacao(status.get().trim());
+                e.setNomeCientifico(cientificoFormatado);
 
                 LocalDate cadastro = LocalDate.now();
                 e.setDataCadastro(cadastro);
@@ -96,6 +127,10 @@ public class EspecieMarinhaController {
                     mensagemErro.set("Erro ao salvar a espécie no banco de dados.");
                     return false;
                 }
+
+                salva.setNomeComum(comumFormatado);
+                salva.setHabitat(habitatFormatado);
+                salva.setNomeCientifico(cientificoFormatado);
 
                 listagem.add(salva);
                 limparCampos();
@@ -284,15 +319,45 @@ public class EspecieMarinhaController {
         }
 
         try {
+            StringBuilder sb = new StringBuilder();
+            for (String p : nomeComum.get().trim().toLowerCase().split("\\s+")) {
+                if (!p.isBlank()) {
+                    sb.append(sb.length() > 0 ? " " : "")
+                            .append(Character.toUpperCase(p.charAt(0)))
+                            .append(p.substring(1));
+                }
+            }
+            String comumFormatado = sb.toString();
+
+            sb.setLength(0);
+            for (String p : habitat.get().trim().toLowerCase().split("\\s+")) {
+                if (!p.isBlank()) {
+                    sb.append(sb.length() > 0 ? " " : "")
+                            .append(Character.toUpperCase(p.charAt(0)))
+                            .append(p.substring(1));
+                }
+            }
+            String habitatFormatado = sb.toString();
+
+            sb.setLength(0);
+            String ncCru = nomeCientifico.get() == null ? "" : nomeCientifico.get().trim().toLowerCase();
+            if (!ncCru.isBlank()) {
+                for (String p : ncCru.split("\\s+")) {
+                    if (!p.isBlank()) {
+                        sb.append(sb.length() > 0 ? " " : "")
+                                .append(Character.toUpperCase(p.charAt(0)))
+                                .append(p.substring(1));
+                    }
+                }
+            }
+            String cientificoFormatado = sb.toString();
+
             EspecieMarinha atualizada = new EspecieMarinha();
             atualizada.setId(idAlvo);
-            atualizada.setNomeComum(nomeComum.get().trim());
-            atualizada.setHabitat(habitat.get().trim());
+            atualizada.setNomeComum(comumFormatado);
+            atualizada.setHabitat(habitatFormatado);
             atualizada.setStatusConservacao(status.get().trim());
-            atualizada.setNomeCientifico(
-                    nomeCientifico.get() == null || nomeCientifico.get().isBlank()
-                            ? ""
-                            : nomeCientifico.get().trim());
+            atualizada.setNomeCientifico(cientificoFormatado);
             atualizada.setDataCadastro(
                     existente.getDataCadastro() != null ? existente.getDataCadastro() : LocalDate.now());
             atualizada.setDataUltimaAtualizacao(LocalDate.now());
