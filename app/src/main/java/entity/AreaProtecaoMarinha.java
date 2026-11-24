@@ -1,29 +1,27 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class AreaProtecaoMarinha{
     private long id;
     private String nome;
     private String estado;
-    private String municipio;
-    private String tipo; 
     private int areaKm2;
     private LocalDate dataCadastro;
-    private LocalDate dataInativo;
     private String orgaoResponavel;
     private boolean ativa;
 
+    private DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public AreaProtecaoMarinha(){
-        this(0," ", " ", " ", " ", 0, " ");
+        this(0," ", " ", 0, " ");
     }
 
-    public AreaProtecaoMarinha(long id, String nome, String estado, String municipio, String tipo, int areaKm2, String orgaoResponsavel){
+    public AreaProtecaoMarinha(long id, String nome, String estado, int areaKm2, String orgaoResponsavel){
         this.id = id;
         this.nome = nome;
         this.estado = estado;
-        this.municipio = municipio;
-        this.tipo = tipo;
         this.areaKm2 = areaKm2;
         this.dataCadastro = LocalDate.now();
         this.orgaoResponavel = orgaoResponsavel;
@@ -44,24 +42,12 @@ public class AreaProtecaoMarinha{
         return this.estado;
     }
 
-    public String getMunicipio(){
-        return this.municipio;
-    }
-
-    public String getTipo(){
-        return this.tipo;
-    }
-
-    public int getAreaKm2(){
+    public int getArea(){
         return this.areaKm2;
     }
 
     public LocalDate getDataCadastro(){
         return this.dataCadastro;
-    }
-
-    public LocalDate getDataInativo(){
-        return this.dataInativo;
     }
 
     public String getOrgaoResponavel(){
@@ -85,13 +71,6 @@ public class AreaProtecaoMarinha{
         this.estado = estado;
     }
 
-    public void setMunicipio(String municipio){
-        this.municipio = municipio;
-    }
-
-    public void setTipo(String tipo){
-        this.tipo = tipo;
-    }
 
     public void setAreaKm2(int areaKm2){
         this.areaKm2 = areaKm2;
@@ -105,20 +84,12 @@ public class AreaProtecaoMarinha{
         this.ativa = ativa;
     }
 
-    public void setDataInativo(LocalDate dataInativo){
-        this.dataInativo = dataInativo;
-    }
-
     public void setDataCadastro(LocalDate dataCadastro){
         this.dataCadastro = dataCadastro;
     }
 
-    public void setInativo(){
-        this.ativa = false;
-        this.dataInativo = LocalDate.now();
+    @Override public String toString(){
+        String dataC = this.dataCadastro.format(formatador);
+        return String.format("%d, %s, %s, %s, %s, %s, %s", this.id, this.nome, this.estado, this.areaKm2, dataC, this.orgaoResponavel, this.ativa);
     }
-
-    // @Override public String toString(){
-    //     return 
-    // }
 }

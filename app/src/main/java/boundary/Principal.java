@@ -11,12 +11,25 @@ public class Principal extends Application {
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
+        // CRUD ESPECIEMARINHA
         EspecieMarinhaView especieView = new EspecieMarinhaView();
         Tab tabEspecies = new Tab("Espécies Marinhas", especieView.getRoot());
+        
+        // CRUD AREAPROTECAOMARINHA
+        AreaProtecaoMarinhaView areaProtecaoView = new AreaProtecaoMarinhaView();
+        Tab tabAreaProtecao = new Tab("Área de Proteção Marinha", areaProtecaoView.getRoot());
 
-        tabPane.getTabs().addAll(tabEspecies);
+        // CRUD OCORRENCIAPOLUICAO
+        OcorrenciaPoluicaoView ocorrenciaView = new OcorrenciaPoluicaoView();
+        Tab tabOcorrencias = new Tab("Ocorrências de Poluição", ocorrenciaView.getRoot());
 
-        Scene scene = new Scene(tabPane, 950, 650);
+        // CRUD ACAOLIMPEZA / MUTIRÃO
+        AcaoLimpezaView acaoLimpezaView = new AcaoLimpezaView();
+        Tab tabAcoesLimpeza = new Tab("Ações de Limpeza", acaoLimpezaView.getRoot());
+
+        tabPane.getTabs().addAll(tabEspecies, tabAreaProtecao, tabOcorrencias, tabAcoesLimpeza);
+
+        Scene scene = new Scene(tabPane, 1200, 750);
         stage.setTitle("OceanTrack");
         stage.setScene(scene);
         stage.show();
