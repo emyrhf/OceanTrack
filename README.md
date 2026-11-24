@@ -7,7 +7,7 @@ Sistema de monitoramento e preservação da vida no oceano, desenvolvido em Java
 ![SQL](https://img.shields.io/badge/SQL-MariaDB-003545?logo=mariadb&logoColor=white)
 ![JDBC](https://img.shields.io/badge/JDBC-MariaDB%20Driver-lightgrey)
 ![Gradle](https://img.shields.io/badge/Gradle-build-02303A?logo=gradle&logoColor=white)
-![Status](https://img.shields.io/badge/status-concluído-success)
+![Status](https://img.shields.io/badge/status-em%20andamento-yellow)
 ![Licença](https://img.shields.io/badge/licença-MIT-green)
 
 
