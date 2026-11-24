@@ -24,3 +24,15 @@ CREATE TABLE IF NOT EXISTS pesquisadores (
   tipo          VARCHAR(20) NOT NULL,
   data_ingresso DATE        NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS expedicoes (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    titulo        VARCHAR(150)  NOT NULL,
+    data_inicio   DATE          NOT NULL,
+    data_fim      DATE,
+    localizacao   VARCHAR(150)  NOT NULL,
+    embarcacao    VARCHAR(120)  NOT NULL,
+    orcamento     DECIMAL(12,2) NOT NULL,
+    objetivo      VARCHAR(500),
+    status        VARCHAR(20)   NOT NULL
+);
