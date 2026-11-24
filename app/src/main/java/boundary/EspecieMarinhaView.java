@@ -16,6 +16,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -44,7 +45,8 @@ public class EspecieMarinhaView {
         TextField txtNomeComum = new TextField();
         TextField txtNomeCientifico = new TextField();
         TextField txtHabitat = new TextField();
-        TextField txtStatus = new TextField();
+        // STATUS era digitável -> mudou para DROPBOX com entradas já pré-determinadas
+        // TextField txtStatus = new TextField();
 
         TextField txtCadastro = new TextField();
         txtCadastro.setEditable(false);
@@ -87,6 +89,24 @@ public class EspecieMarinhaView {
         });
 
         btnPesquisar.setOnAction(e -> {
+            boolean semFiltros =
+                    (txtNomeComum.getText() == null || txtNomeComum.getText().isBlank())
+                    && (txtNomeCientifico.getText() == null || txtNomeCientifico.getText().isBlank())
+                    && (txtHabitat.getText() == null || txtHabitat.getText().isBlank())
+                    && (cmbStatus.getValue() == null || cmbStatus.getValue().isBlank());
+
+            if (semFiltros && (txtId.getText() == null || txtId.getText().isBlank())) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Pesquisar por ID");
+                dialog.setHeaderText(null);
+                dialog.setContentText("Informe o ID da Espécie Marinha:");
+                dialog.showAndWait().ifPresent(idDigitado -> {
+                    if (!idDigitado.isBlank()) {
+                        control.idProperty().set(idDigitado.trim());
+                    }
+                });
+            }
+
             if (control.pesquisar()) {
                 new Alert(Alert.AlertType.INFORMATION, "Espécie(s) encontrada(s)!", ButtonType.OK).showAndWait();
             } else {
