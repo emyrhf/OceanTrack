@@ -23,3 +23,26 @@ CREATE TABLE IF NOT EXISTS area_protecao_marinha (
     orgao_responsavel VARCHAR(150) NOT NULL,
     ativa BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+-- Tabelas dos CRUDs de Felipe Lima
+CREATE TABLE IF NOT EXISTS ocorrencias_poluicao (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(40) NOT NULL,
+    local_ocorrencia VARCHAR(180) NOT NULL,
+    data_ocorrencia DATE NOT NULL,
+    gravidade VARCHAR(30) NOT NULL,
+    volume_estimado DECIMAL(12,2) NOT NULL,
+    descricao TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS acoes_limpeza (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    data_acao DATE NOT NULL,
+    local_acao VARCHAR(180) NOT NULL,
+    numero_participantes INT NOT NULL,
+    quantidade_lixo_kg DECIMAL(12,2) NOT NULL,
+    organizador VARCHAR(150) NOT NULL,
+    tipo_residuo_predominante VARCHAR(80) NOT NULL
+);
