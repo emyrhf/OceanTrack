@@ -27,7 +27,11 @@ public class Principal extends Application {
         AcaoLimpezaView acaoLimpezaView = new AcaoLimpezaView();
         Tab tabAcoesLimpeza = new Tab("Ações de Limpeza", acaoLimpezaView.getRoot());
 
-        tabPane.getTabs().addAll(tabEspecies, tabAreaProtecao, tabOcorrencias, tabAcoesLimpeza);
+        // CRUD PESQUISADOR / 
+        PesquisadorView pesquisadorView = new PesquisadorView();
+        Tab tabPesquisadores = new Tab("Pesquisadores", pesquisadorView.getRoot());
+
+        tabPane.getTabs().addAll(tabEspecies, tabAreaProtecao, tabOcorrencias, tabAcoesLimpeza, tabPesquisadores);
 
         Scene scene = new Scene(tabPane, 1200, 750);
         stage.setTitle("OceanTrack");
