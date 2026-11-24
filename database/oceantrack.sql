@@ -13,3 +13,14 @@ CREATE TABLE IF NOT EXISTS especies_marinhas (
     data_cadastro DATE NOT NULL,
     data_atualizacao DATE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS pesquisadores (
+  id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+  nome          VARCHAR(120) NOT NULL,
+  cpf           VARCHAR(14) NOT NULL UNIQUE,
+  telefone      VARCHAR(20),
+  email         VARCHAR(120),
+  instituicao   VARCHAR(120),
+  tipo          VARCHAR(20) NOT NULL,
+  data_ingresso DATE        NOT NULL
+  );
