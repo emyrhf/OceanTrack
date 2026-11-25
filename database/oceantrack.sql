@@ -14,15 +14,17 @@ CREATE TABLE IF NOT EXISTS especies_marinhas (
     data_atualizacao DATE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS area_protecao_marinha (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
-    estado VARCHAR(100) NOT NULL,
-    area_km2 INT NOT NULL,
-    data_cadastro DATE NOT NULL,
-    orgao_responsavel VARCHAR(150) NOT NULL,
-    ativa BOOLEAN NOT NULL DEFAULT TRUE
-);
+CREATE TABLE IF NOT EXISTS pesquisadores (
+  id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+  nome          VARCHAR(120) NOT NULL,
+  cpf           VARCHAR(14) NOT NULL UNIQUE,
+  telefone      VARCHAR(20),
+  email         VARCHAR(120),
+  instituicao   VARCHAR(120),
+  tipo          VARCHAR(20) NOT NULL,
+  data_ingresso DATE        NOT NULL
+  );
+
 
 CREATE TABLE IF NOT EXISTS ocorrencias_poluicao (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -44,4 +46,16 @@ CREATE TABLE IF NOT EXISTS acoes_limpeza (
     quantidade_lixo_kg DECIMAL(12,2) NOT NULL,
     organizador VARCHAR(150) NOT NULL,
     tipo_residuo_predominante VARCHAR(80) NOT NULL
+
+  CREATE TABLE IF NOT EXISTS expedicoes (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    titulo        VARCHAR(150)  NOT NULL,
+    data_inicio   DATE          NOT NULL,
+    data_fim      DATE,
+    localizacao   VARCHAR(150)  NOT NULL,
+    embarcacao    VARCHAR(120)  NOT NULL,
+    orcamento     DECIMAL(12,2) NOT NULL,
+    objetivo      VARCHAR(500),
+    status        VARCHAR(20)   NOT NULL
+
 );
