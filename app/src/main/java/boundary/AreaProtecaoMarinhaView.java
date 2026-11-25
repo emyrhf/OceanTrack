@@ -43,12 +43,15 @@ public class AreaProtecaoMarinhaView {
         txtId.setStyle("-fx-background-color: #e0e0e0; -fx-opacity: 1; -fx-alignment: RIGHT;");
 
         TextField txtNome = new TextField();
+        txtNome.setPromptText("Ex: Parque Nacional Marinho...");
         TextField txtEstado = new TextField();
-
+        txtEstado.setPromptText("Ex: São Paulo");
+        
         TextField txtAreaKm2 = new TextField();
-        txtAreaKm2.setStyle("-fx-alignment: RIGHT;");
-
+        txtAreaKm2.setPromptText("Ex: 1200");
+        
         TextField txtOrgaoResponsavel = new TextField();
+        txtOrgaoResponsavel.setPromptText("Ex: Icmbio");
 
         TextField txtCadastro = new TextField();
         txtCadastro.setEditable(false);
@@ -267,9 +270,6 @@ public class AreaProtecaoMarinhaView {
         colAcoes.setMinWidth(155);
         colAcoes.setPrefWidth(160);
         colAcoes.setMaxWidth(175);
-
-        listagem.getColumns().addAll(colId, colNome, colEstado, colArea, colOrgao, colAtiva, colCadastro, colAcoes);
-        listagem.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         listagem.getColumns().addAll(colId, colNome, colEstado, colArea, colOrgao, colAtiva, colCadastro, colAcoes);
         listagem.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);

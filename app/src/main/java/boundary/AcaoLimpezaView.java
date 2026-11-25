@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -202,8 +201,7 @@ public class AcaoLimpezaView {
         colResiduo.setPrefWidth(135);
         colAcoes.setMinWidth(150);
 
-        listagem.getColumns().addAll(colId, colNome, colData, colLocal, colParticipantes,
-                colQuantidade, colOrganizador, colResiduo, colAcoes);
+        listagem.getColumns().addAll(colId, colNome, colData, colLocal, colParticipantes,colQuantidade, colOrganizador, colResiduo, colAcoes);
         listagem.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         listagem.setItems(control.getListagem());
 

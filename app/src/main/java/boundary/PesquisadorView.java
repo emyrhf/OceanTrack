@@ -40,7 +40,7 @@ public class PesquisadorView {
         grid.setHgap(10);
         grid.setVgap(8);
         grid.setPadding(new Insets(15));
-        grid.addRow(0, new Label("Nome:"), txtNome, new Label("CPF:"), txtCpf);
+        grid.addRow(0, new Label("Nome: *"), txtNome, new Label("CPF:"), txtCpf);
         grid.addRow(1, new Label("Telefone:"), txtTelefone, new Label("E-mail:"), txtEmail);
         grid.addRow(2, new Label("Instituição:"), txtInstituicao, new Label("Tipo:"), cmbTipo);
 

@@ -43,8 +43,11 @@ public class EspecieMarinhaView {
         txtId.setStyle("-fx-background-color: #e0e0e0; -fx-opacity: 1; -fx-alignment: RIGHT;");
 
         TextField txtNomeComum = new TextField();
+        txtNomeComum.setPromptText("Ex: Baleia Azul");
         TextField txtNomeCientifico = new TextField();
+        txtNomeCientifico.setPromptText("Ex: Balaenoptera Musculus");
         TextField txtHabitat = new TextField();
+        txtHabitat.setPromptText("Ex: Oceanos");
         // STATUS era digitável -> mudou para DROPBOX com entradas já pré-determinadas
         // TextField txtStatus = new TextField();
 
