@@ -113,7 +113,7 @@ Cada integrante desenvolveu os seus dois CRUDs em todas as camadas (Fronteira, C
 
 ## Vídeo de demonstração
 
-[Acessar vídeo de demonstração](https://youtu.be/nItcDzknNlI)]
+[Acessar vídeo de demonstração](https://youtu.be/nItcDzknNlI)
 
 ## Estrutura do projeto
 
