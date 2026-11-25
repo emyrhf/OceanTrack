@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS area_protecao_marinha (
     ativa BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- Tabelas dos CRUDs de Felipe Lima
 CREATE TABLE IF NOT EXISTS ocorrencias_poluicao (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(40) NOT NULL,
